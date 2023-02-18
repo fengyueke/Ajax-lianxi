@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var json = '{"a" :"hello", "b" : "World"}';
+        //  JSON.parse 可以将json数据转化为js对象
+        var obj = JSON.parse(json);
+        console.log(obj);
+        // JSON.stringify 可以将js对象转化为Json对象
+        var json_1 = JSON.stringify(obj);
+        console.log(json_1);
+        console.log(typeof json_1);
+    </script>
+</body>
+
+</html>

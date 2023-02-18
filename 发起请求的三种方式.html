@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./js/jquery.min.js"></script>
+</head>
+
+<body>
+    <button id="getXer">发起不带参数的get请求</button>
+    <button id="getCan">发起带参数的get请求</button>
+    <button id="postXhr">发起post请求</button>
+    <button id="ajaxGET">$.Ajax中的GET请求</button>
+    <button id="ajaxPOST">$.Ajax中的POST请求</button>
+    <script>
+        $(function() {
+            // get不带参数发起请求
+            $('#getXer').on('click', function() {
+                    $.get('http://www.liulongbin.top:3006/api/getbooks', function(res) {
+                        console.log(res);
+                    })
+                })
+                // get带参数发起请求
+            $('#getCan').on('click', function() {
+                    $.get('http://www.liulongbin.top:3006/api/getbooks', {
+                        id: 1
+                    }, function(res) {
+                        console.log(res);
+                    })
+                })
+                // post向服务器提交数据
+            $('#postXhr').on('click', function() {
+                    $.post('http://www.liulongbin.top:3006/api/addbook', {
+                        bookname: '水浒传',
+                        author: '施耐庵',
+                        publisher: '上海图书出版社'
+                    }, function(res) {
+                        console.log(res);
+                    })
+                })
+                // $.Ajax()
+            $('#ajaxGET').on('click', function() {
+                $.ajax({
+                    type: "GET",
+                    url: "http://www.liulongbin.top:3006/api/getbooks",
+                    data: {
+                        id: 1
+                    },
+                    success: function(res) {
+                        console.log(res);
+                    }
+                });
+            })
+            $('#ajaxPOST').on('click', function() {
+                $.ajax({
+                    type: "POST",
+                    url: "http://www.liulongbin.top:3006/api/addbook",
+                    data: {
+                        bookname: '水浒传',
+                        author: '施耐庵',
+                        publisher: '上海图书出版社'
+                    },
+                    success: function(res) {
+                        console.log(res);
+                    }
+                });
+            })
+        })
+    </script>
+</body>
+
+</html>

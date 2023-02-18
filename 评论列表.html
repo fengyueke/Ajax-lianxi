@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <script src="./js/jquery.min.js"></script>
+    <style>
+        .btn {
+            outline: none!important;
+        }
+    </style>
+</head>
+
+<body style="padding: 15px;">
+    <!-- 发表 -->
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">发表评论</h3>
+        </div>
+        <form class="panel-body" id="form1">
+            <div>评论人:</div>
+            <input type="text" name="username" class="name form-control" style="margin:5px 0 ;">
+            <div>评论内容:</div>
+            <textarea id="input" name="content" style="margin-top: 5px;" class="form-control" rows="2" required="required" placeholder="请输入评论内容（最多120字）"></textarea>
+            <button type="submit" style="margin-top: 5px;" class="btn btn-primary" id="btnSmt">发表评论</button>
+        </form>
+    </div>
+    <!-- 列表 -->
+
+    <ul class="list-group" id="listUl">
+    </ul>
+    <script>
+        $(function() {
+            initial();
+
+            function initial() {
+                $.get("http://www.liulongbin.top:3006/api/cmtlist",
+                    function(res) {
+                        $('#listUl').html('');
+                        $.each(res.data, function(i, ele) {
+                            var li = ' <li class="list-group-item"><span class="badge" style="background: #E6B15F;">评论时间:' + ele.time + '</span><span class="badge" style="background-color:#5BBFDB ;">评论人:' + ele.username + '</span>' + ele.content + '</li>';
+                            $('#listUl').append(li);
+                        });
+                    }
+                );
+            }
+            // 发表评论
+            $('#btnSmt').on('click', function() {
+                    $.post("http://www.liulongbin.top:3006/api/addcmt", {
+                            username: $(this).siblings('.name').val(),
+                            content: $(this).siblings('textarea').val()
+                        },
+                        function(res) {}
+                    );
+                    initial();
+                })
+                // $('#form1').on('submit', function(e) {
+                //     e.preventDefault();
+                //     var data = $(this).serialize();
+                //     var arr = data.split('&');
+                //     var nameArr = arr[0].split('=');
+                //     var name = String(nameArr[1]);
+                //     var ctnArr = arr[1].split('=');
+                //     var ctn = String(ctnArr[1]);
+                //     $.post("http://www.liulongbin.top:3006/api/addcmt", {
+                //             username: name,
+                //             content: ctn
+                //         },
+                //         function(res) {}
+                //     );
+                //     initial();
+                // })
+        })
+    </script>
+</body>
+
+</html>

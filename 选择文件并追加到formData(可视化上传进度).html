@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <script src="./js/jquery.min.js"></script>
+</head>
+
+<body>
+    <!-- 文件选择框  -->
+    <input type="file" id="file1">
+    <!-- 上传按钮 -->
+    <button id="btnUpload">上传文件</button>
+    <!-- bootstrap 进度条 -->
+    <div class="progress" style="width: 500px; margin: 10px;">
+        <div class="progress-bar progress-bar-striped active" style="width: 0%" id="percent">
+            0%
+        </div>
+    </div>
+    <br>
+    <!-- 显示上传到服务器上的图片 -->
+    <img src="" alt="" id="img">
+    <script>
+        var btn = document.querySelector('#btnUpload')
+
+        btn.addEventListener('click', function() {
+            var files = document.querySelector('#file1').files
+            if (files.length <= 0) {
+                return alert('请选择想要上传的文件')
+            }
+            // 向formDate文件中追加文件
+            var fd = new FormData()
+            fd.append('avatar', files[0])
+                // 使用xhr发起上传请求
+            var xhr = new XMLHttpRequest()
+
+            // 上传进度条
+            xhr.upload.onprogress = function(e) {
+                    console.log(e.lengthComputable);
+                    // e.lengthComputable 布尔值，判断上传的文件有是否具有可计算的长度
+                    if (e.lengthComputable) {
+                        // e.loaded 已属出的字节
+                        // e.total  需传输的字节
+                        var percentComplete = Math.ceil((e.loaded / e.total) * 100)
+                        $('#percent').attr('style', 'width:' + percentComplete + '%').html(percentComplete + '%')
+                    }
+                }
+                // 上传完成
+            xhr.upload.onload = function() {
+                $('#percent').removeClass().addClass('progress-bar progress-bar-success')
+            }
+            xhr.open('POST', 'http://www.liulongbin.top:3006/api/upload/avatar')
+            xhr.send(fd)
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText)
+                    if (data.status === 200) {
+                        document.querySelector('#img').src = 'http://www.liulongbin.top:3006' + data.url
+                    } else {
+                        console.log(data.message);
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
